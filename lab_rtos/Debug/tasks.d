@@ -1,0 +1,1 @@
+tasks.o: ../tasks.c
