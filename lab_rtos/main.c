@@ -4,23 +4,14 @@
 #include <stdlib.h>
 #include "tasks.h"
 
-// Testes para verificar o registerTask()
-uint32_t *testeA = (uint32_t *)0x000AAAAA;
-uint32_t *testeB = (uint32_t *)0x000BBBBB;
-uint32_t *testeC = (uint32_t *)0x000CCCCC;
-
 int main(void){
+    //clear_memo();
 
-    WDTCTL = WDTPW | WDTSSEL__ACLK | WDTTMSEL | WDTIS_4;
-    SFRIE1 |= WDTIE;
-    P1DIR |= BIT0;
+    registerTask(task_wait);
+    registerTask(task1);
+    registerTask(task2);
 
-    __enable_interrupt();
-
-    registerTask(testeA);
-    registerTask(testeB);
-    clear_memo();
-//    registerTask(testeC);
+    startRTOS();
 
     while(1){
         continue;

@@ -42,23 +42,19 @@
 #include <stdlib.h>
 
 #define STACK_START 0x2800
+#define STACK_END 0x2D00
 #define MAX_TASKS 10
 
 void registerTask(void* t);
 void dispatcher(void);
 void clear_memo(void);
+void startRTOS(void);
+void wait(uint32_t);
 
 typedef struct {
-    uint16_t* pStack; // Ponteiro atual da pilha da tarefa
-    uint32_t* pTask;  // Onde esta a tarefa na memoria
+    uint16_t* pStack;  // Ponteiro atual da pilha da tarefa
+    uint32_t* pTask;   // Onde esta a tarefa na memoria
+    uint32_t wait; // Quantidade de ticks que a tarefa aguarda
 } task_t;
 
-task_t tasks[10];
-
-uint8_t tasks_registered;
-uint8_t task_running;
-
-// Uncomment bellow to make it happens
-//__attribute__ ((naked))
-__attribute__ ((interrupt(WDT_VECTOR)))
-void WDT_tick(void);
+//void WDT_tick(void);
