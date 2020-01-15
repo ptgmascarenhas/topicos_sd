@@ -1,5 +1,4 @@
-#include "rtos.h"
-// Recebe o nome da funcao como parametro e pega o primeiro endereco
+#include <os.h>
 
 void registerTask(void* t){
 
@@ -40,19 +39,36 @@ void dispatcher(void){
 //  1. Entrada na ISR (SR e PC já estão salvos na pilha da tarefa)
 
 //  2. Salva o contexto, colocando os registros R[4-15] na pilha
+    asm("pushm.a  #12,R15");
 
 //  3. Mover o ponteiro da pilha para a pilha do escalonador
 
 //  4. Executar o escalonador e obter a nova tarefa a ser executada
+    task_running = (++task_running) % 10;
 
 //  5. Salvar o ponteiro da pilha do escalonador
 
 //  6. Restaurar o ponteiro da pilha da nova tarefa
+    asm("MOV %0,SP" : : "m" (tasks[task_running].pStack));
 
 //  7. Restaura o contexto da nova tarefa
 
+
 //  8. Retorna da interrupção (RETI)
     asm("RETI");
+}
+
+void clear_memo(void){
+
+    uint16_t *pClear;
+
+    for(int task = 1; task <= MAX_TASKS; task++){
+        pClear = (STACK_START + 0x50*(task));
+        for(int i = 0; i <= 26; i++){
+            *(pClear-i) = rand();
+        }
+    }
+
 }
 
 void WDT_tick(void){

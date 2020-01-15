@@ -46,6 +46,7 @@
 
 void registerTask(void* t);
 void dispatcher(void);
+void clear_memo(void);
 
 typedef struct {
     uint16_t* pStack; // Ponteiro atual da pilha da tarefa
@@ -54,7 +55,8 @@ typedef struct {
 
 task_t tasks[10];
 
-int tasks_registered;
+uint8_t tasks_registered;
+uint8_t task_running;
 
 // Uncomment bellow to make it happens
 //__attribute__ ((naked))

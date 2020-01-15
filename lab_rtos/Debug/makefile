@@ -9,7 +9,7 @@ GEN_CMDS__FLAG :=
 
 ORDERED_OBJS += \
 "./main.o" \
-"./rtos.o" \
+"./os.o" \
 "./tasks.o" \
 -T"../msp430f5529.ld" \
 $(GEN_CMDS__FLAG) \
@@ -157,8 +157,8 @@ lab_rtos.hex: $(EXE_OUTPUTS)
 # Other Targets
 clean:
 	-$(RM) $(BIN_OUTPUTS__QUOTED)$(EXE_OUTPUTS__QUOTED)
-	-$(RM) "main.o" "rtos.o" "tasks.o" 
-	-$(RM) "main.d" "rtos.d" "tasks.d" 
+	-$(RM) "main.o" "os.o" "tasks.o" 
+	-$(RM) "main.d" "os.d" "tasks.d" 
 	-@echo 'Finished clean'
 	-@echo ' '
 

@@ -1,7 +1,7 @@
 #include <msp430.h> 
+#include "os.h"
 #include <stdint.h>
 #include <stdlib.h>
-#include "rtos.h"
 #include "tasks.h"
 
 // Testes para verificar o registerTask()
@@ -19,6 +19,7 @@ int main(void){
 
     registerTask(testeA);
     registerTask(testeB);
+    clear_memo();
 //    registerTask(testeC);
 
     while(1){

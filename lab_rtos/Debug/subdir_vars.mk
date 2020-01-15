@@ -8,32 +8,32 @@ LD_SRCS += \
 
 C_SRCS += \
 ../main.c \
-../rtos.c \
+../os.c \
 ../tasks.c 
 
 C_DEPS += \
 ./main.d \
-./rtos.d \
+./os.d \
 ./tasks.d 
 
 OBJS += \
 ./main.o \
-./rtos.o \
+./os.o \
 ./tasks.o 
 
 OBJS__QUOTED += \
 "main.o" \
-"rtos.o" \
+"os.o" \
 "tasks.o" 
 
 C_DEPS__QUOTED += \
 "main.d" \
-"rtos.d" \
+"os.d" \
 "tasks.d" 
 
 C_SRCS__QUOTED += \
 "../main.c" \
-"../rtos.c" \
+"../os.c" \
 "../tasks.c" 
 
 
