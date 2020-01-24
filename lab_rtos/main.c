@@ -5,8 +5,11 @@
 #include "tasks.h"
 
 int main(void){
-    registerTask(task1, 1);
-    registerTask(task2, 1);
+    //clear_memo();
+
+    registerTask(task_idle);
+    registerTask(task1);
+    registerTask(task2);
 
     startRTOS();
 
