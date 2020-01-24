@@ -5,9 +5,8 @@
 #include "tasks.h"
 
 int main(void){
-    registerTask(task_idle, 0); // SEMPRE DECLARAR ESSA AQUI
-    registerTask(task1, 0);
-    registerTask(task2, 0);
+    registerTask(task1, 1);
+    registerTask(task2, 1);
 
     startRTOS();
 

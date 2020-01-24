@@ -9,7 +9,7 @@
 #define QUEUE_SIZE 5
 
 typedef struct {
-    task_t fifo[QUEUE_SIZE];
+    task_t tasks[QUEUE_SIZE];
     uint8_t head, tail, size;
 } fifo_t;
 

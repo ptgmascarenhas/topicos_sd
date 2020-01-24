@@ -3,7 +3,7 @@ Archive member included to satisfy reference by file (symbol)
 /Applications/ti/ccs930/ccs/tools/compiler/msp430-gcc-8.3.1.25_macos/bin/../lib/gcc/msp430-elf/8.3.1/large/full-memory-range/libgcc.a(lib2divHI.o)
                               ./queue.o (__mspabi_remi)
 /Applications/ti/ccs930/ccs/tools/compiler/msp430-gcc-8.3.1.25_macos/bin/../lib/gcc/msp430-elf/8.3.1/large/full-memory-range/libgcc.a(slli.o)
-                              ./os.o (__mspabi_slll_3)
+                              ./queue.o (__mspabi_slll_4)
 /Applications/ti/ccs930/ccs/tools/compiler/msp430-gcc-8.3.1.25_macos/bin/../lib/gcc/msp430-elf/8.3.1/large/full-memory-range/libgcc.a(srli.o)
                               ./os.o (__mspabi_srll_4)
 /Applications/ti/ccs930/ccs/tools/compiler/msp430-gcc-8.3.1.25_macos/bin/../lib/gcc/msp430-elf/8.3.1/../../../../msp430-elf/lib/large/full-memory-range/libc.a(lib_a-rand.o)
@@ -59,14 +59,13 @@ Allocating common symbols
 Common symbol       size              file
 
 errno               0x2               /Applications/ti/ccs930/ccs/tools/compiler/msp430-gcc-8.3.1.25_macos/bin/../lib/gcc/msp430-elf/8.3.1/../../../../msp430-elf/lib/large/full-memory-range/libc.a(lib_a-reent.o)
-fifo_blocked        0x4a              ./os.o
+fifo_blocked        0x54              ./os.o
+problema            0x4               ./os.o
 task2_counter       0x4               ./tasks.o
-current_task        0xe               ./os.o
+current_task        0x10              ./os.o
 tasks_registered    0x1               ./os.o
-fifos               0x94              ./os.o
-nSched              0x2               ./os.o
-task_running        0x1               ./os.o
-task_error          0xe               ./queue.o
+fifos               0xa8              ./os.o
+nSched              0x4               ./os.o
 
 Discarded input sections
 
@@ -639,7 +638,7 @@ __reset_vector  0x000000000000fffe        0x2
                 0x0000000000004420                PROVIDE (__romdatastart, LOADADDR (.data))
                 0x0000000000000138                PROVIDE (__romdatacopysize, SIZEOF (.data))
 
-.bss            0x0000000000002538      0x10a load address 0x0000000000004558
+.bss            0x0000000000002538      0x120 load address 0x0000000000004558
                 0x0000000000002538                . = ALIGN (0x2)
                 0x0000000000002538                PROVIDE (__bssstart, .)
  *(.lower.bss.* .lower.bss)
@@ -656,45 +655,42 @@ __reset_vector  0x000000000000fffe        0x2
                 0x000000000000253c                __malloc_free_list
                 0x0000000000002540                . = ALIGN (0x2)
  *(COMMON)
- COMMON         0x0000000000002540       0xf1 ./os.o
+ COMMON         0x0000000000002540      0x116 ./os.o
                 0x0000000000002540                fifo_blocked
-                0x000000000000258a                current_task
-                0x0000000000002598                tasks_registered
-                0x000000000000259a                fifos
-                0x000000000000262e                nSched
-                0x0000000000002630                task_running
- *fill*         0x0000000000002631        0x1 
- COMMON         0x0000000000002632        0xe ./queue.o
-                0x0000000000002632                task_error
- COMMON         0x0000000000002640        0x2 /Applications/ti/ccs930/ccs/tools/compiler/msp430-gcc-8.3.1.25_macos/bin/../lib/gcc/msp430-elf/8.3.1/../../../../msp430-elf/lib/large/full-memory-range/libc.a(lib_a-reent.o)
-                0x0000000000002640                errno
+                0x0000000000002594                problema
+                0x0000000000002598                current_task
+                0x00000000000025a8                tasks_registered
+                0x00000000000025aa                fifos
+                0x0000000000002652                nSched
+ COMMON         0x0000000000002656        0x2 /Applications/ti/ccs930/ccs/tools/compiler/msp430-gcc-8.3.1.25_macos/bin/../lib/gcc/msp430-elf/8.3.1/../../../../msp430-elf/lib/large/full-memory-range/libc.a(lib_a-reent.o)
+                0x0000000000002656                errno
                 [!provide]                        PROVIDE (__bssend, .)
-                0x000000000000010a                PROVIDE (__bsssize, SIZEOF (.bss))
+                0x0000000000000120                PROVIDE (__bsssize, SIZEOF (.bss))
 
-.noinit         0x0000000000002642        0x0 load address 0x0000000000004558
-                0x0000000000002642                . = ALIGN (0x2)
+.noinit         0x0000000000002658        0x0 load address 0x0000000000004558
+                0x0000000000002658                . = ALIGN (0x2)
                 [!provide]                        PROVIDE (__noinit_start, .)
  *(.noinit)
-                0x0000000000002642                . = ALIGN (0x2)
+                0x0000000000002658                . = ALIGN (0x2)
                 [!provide]                        PROVIDE (__noinit_end, .)
 
-.heap           0x0000000000002642        0x4 load address 0x0000000000004558
-                0x0000000000002642                . = ALIGN (0x2)
-                0x0000000000002642                __heap_start__ = .
-                0x0000000000002642                _end = __heap_start__
-                0x0000000000002642                PROVIDE (end, .)
+.heap           0x0000000000002658        0x4 load address 0x0000000000004558
+                0x0000000000002658                . = ALIGN (0x2)
+                0x0000000000002658                __heap_start__ = .
+                0x0000000000002658                _end = __heap_start__
+                0x0000000000002658                PROVIDE (end, .)
  *(.heap)
-                0x0000000000002642                _end = .
+                0x0000000000002658                _end = .
                 [!provide]                        PROVIDE (end, .)
-                0x0000000000002642        0x4 LONG 0x0
-                0x0000000000002646                __heap_end__ = .
-                0x0000000000002646                __HeapLimit = __heap_end__
+                0x0000000000002658        0x4 LONG 0x0
+                0x000000000000265c                __heap_end__ = .
+                0x000000000000265c                __HeapLimit = __heap_end__
 
 .stack          0x0000000000004400        0x0
                 0x0000000000004400                PROVIDE (__stack, .)
  *(.stack)
 
-.lowtext        0x0000000000004558      0x1b0
+.lowtext        0x0000000000004558      0x284
                 0x0000000000004558                PROVIDE (_start, .)
                 0x0000000000004558                . = ALIGN (0x2)
  *(SORT(.crt_*))
@@ -711,138 +707,138 @@ __reset_vector  0x000000000000fffe        0x2
                 0x0000000000004580        0x6 /Applications/ti/ccs930/ccs/tools/compiler/msp430-gcc-8.3.1.25_macos/bin/../lib/gcc/msp430-elf/8.3.1/../../../../msp430-elf/lib/large/full-memory-range/libcrt.a(crt_main.o)
                 0x0000000000004580                __crt0_call_main
  *(.lowtext)
- .lowtext       0x0000000000004586      0x182 ./os.o
+ .lowtext       0x0000000000004586      0x256 ./os.o
                 0x0000000000004586                WDT_tick
 
-.lower.text     0x0000000000004708        0x0
-                0x0000000000004708                . = ALIGN (0x2)
+.lower.text     0x00000000000047dc        0x0
+                0x00000000000047dc                . = ALIGN (0x2)
  *(.lower.text.* .lower.text)
 
-.text           0x0000000000004708      0xac2
-                0x0000000000004708                . = ALIGN (0x2)
+.text           0x00000000000047dc      0xaba
+                0x00000000000047dc                . = ALIGN (0x2)
  *(.text .stub .text.* .gnu.linkonce.t.* .text:*)
- .text          0x0000000000004708       0x26 ./main.o
-                0x0000000000004708                main
- .text          0x000000000000472e      0x1c4 ./os.o
-                0x000000000000472e                registerTask
-                0x0000000000004830                clear_memo
-                0x0000000000004862                startRTOS
-                0x00000000000048c8                wait
- .text          0x00000000000048f2      0x136 ./queue.o
-                0x00000000000048f2                fifoPut
-                0x0000000000004996                fifoGet
- .text          0x0000000000004a28       0x4a ./tasks.o
-                0x0000000000004a28                task_idle
-                0x0000000000004a2c                task1
-                0x0000000000004a52                task2
+ .text          0x00000000000047dc       0x1e ./main.o
+                0x00000000000047dc                main
+ .text          0x00000000000047fa      0x1e8 ./os.o
+                0x00000000000047fa                task_idle
+                0x000000000000481e                registerTask
+                0x0000000000004912                clear_memo
+                0x0000000000004944                startRTOS
+                0x00000000000049b8                wait
+ .text          0x00000000000049e2      0x11a ./queue.o
+                0x00000000000049e2                fifoPut
+                0x0000000000004a8c                fifoGet
+ .text          0x0000000000004afc       0x42 ./tasks.o
+                0x0000000000004afc                task1
+                0x0000000000004b20                task2
  .text.udivmodhi4
-                0x0000000000004a72       0x40 /Applications/ti/ccs930/ccs/tools/compiler/msp430-gcc-8.3.1.25_macos/bin/../lib/gcc/msp430-elf/8.3.1/large/full-memory-range/libgcc.a(lib2divHI.o)
-                0x0000000000004a72                udivmodhi4
+                0x0000000000004b3e       0x40 /Applications/ti/ccs930/ccs/tools/compiler/msp430-gcc-8.3.1.25_macos/bin/../lib/gcc/msp430-elf/8.3.1/large/full-memory-range/libgcc.a(lib2divHI.o)
+                0x0000000000004b3e                udivmodhi4
  .text.__modhi3
-                0x0000000000004ab2       0x32 /Applications/ti/ccs930/ccs/tools/compiler/msp430-gcc-8.3.1.25_macos/bin/../lib/gcc/msp430-elf/8.3.1/large/full-memory-range/libgcc.a(lib2divHI.o)
-                0x0000000000004ab2                __mspabi_remi
+                0x0000000000004b7e       0x32 /Applications/ti/ccs930/ccs/tools/compiler/msp430-gcc-8.3.1.25_macos/bin/../lib/gcc/msp430-elf/8.3.1/large/full-memory-range/libgcc.a(lib2divHI.o)
+                0x0000000000004b7e                __mspabi_remi
  .text.__mspabi_slll_n
-                0x0000000000004ae4       0x3e /Applications/ti/ccs930/ccs/tools/compiler/msp430-gcc-8.3.1.25_macos/bin/../lib/gcc/msp430-elf/8.3.1/large/full-memory-range/libgcc.a(slli.o)
-                0x0000000000004ae4                __mspabi_slll_15
-                0x0000000000004ae8                __mspabi_slll_14
-                0x0000000000004aec                __mspabi_slll_13
-                0x0000000000004af0                __mspabi_slll_12
-                0x0000000000004af4                __mspabi_slll_11
-                0x0000000000004af8                __mspabi_slll_10
-                0x0000000000004afc                __mspabi_slll_9
-                0x0000000000004b00                __mspabi_slll_8
-                0x0000000000004b04                __mspabi_slll_7
-                0x0000000000004b08                __mspabi_slll_6
-                0x0000000000004b0c                __mspabi_slll_5
-                0x0000000000004b10                __mspabi_slll_4
-                0x0000000000004b14                __mspabi_slll_3
-                0x0000000000004b18                __mspabi_slll_2
-                0x0000000000004b1c                __mspabi_slll_1
+                0x0000000000004bb0       0x3e /Applications/ti/ccs930/ccs/tools/compiler/msp430-gcc-8.3.1.25_macos/bin/../lib/gcc/msp430-elf/8.3.1/large/full-memory-range/libgcc.a(slli.o)
+                0x0000000000004bb0                __mspabi_slll_15
+                0x0000000000004bb4                __mspabi_slll_14
+                0x0000000000004bb8                __mspabi_slll_13
+                0x0000000000004bbc                __mspabi_slll_12
+                0x0000000000004bc0                __mspabi_slll_11
+                0x0000000000004bc4                __mspabi_slll_10
+                0x0000000000004bc8                __mspabi_slll_9
+                0x0000000000004bcc                __mspabi_slll_8
+                0x0000000000004bd0                __mspabi_slll_7
+                0x0000000000004bd4                __mspabi_slll_6
+                0x0000000000004bd8                __mspabi_slll_5
+                0x0000000000004bdc                __mspabi_slll_4
+                0x0000000000004be0                __mspabi_slll_3
+                0x0000000000004be4                __mspabi_slll_2
+                0x0000000000004be8                __mspabi_slll_1
  .text.__mspabi_slll
-                0x0000000000004b22        0xc /Applications/ti/ccs930/ccs/tools/compiler/msp430-gcc-8.3.1.25_macos/bin/../lib/gcc/msp430-elf/8.3.1/large/full-memory-range/libgcc.a(slli.o)
-                0x0000000000004b28                __mspabi_slll
+                0x0000000000004bee        0xc /Applications/ti/ccs930/ccs/tools/compiler/msp430-gcc-8.3.1.25_macos/bin/../lib/gcc/msp430-elf/8.3.1/large/full-memory-range/libgcc.a(slli.o)
+                0x0000000000004bf4                __mspabi_slll
  .text.__mspabi_srll_n
-                0x0000000000004b2e       0x5c /Applications/ti/ccs930/ccs/tools/compiler/msp430-gcc-8.3.1.25_macos/bin/../lib/gcc/msp430-elf/8.3.1/large/full-memory-range/libgcc.a(srli.o)
-                0x0000000000004b2e                __mspabi_srll_15
-                0x0000000000004b34                __mspabi_srll_14
-                0x0000000000004b3a                __mspabi_srll_13
-                0x0000000000004b40                __mspabi_srll_12
-                0x0000000000004b46                __mspabi_srll_11
-                0x0000000000004b4c                __mspabi_srll_10
-                0x0000000000004b52                __mspabi_srll_9
-                0x0000000000004b58                __mspabi_srll_8
-                0x0000000000004b5e                __mspabi_srll_7
-                0x0000000000004b64                __mspabi_srll_6
-                0x0000000000004b6a                __mspabi_srll_5
-                0x0000000000004b70                __mspabi_srll_4
-                0x0000000000004b76                __mspabi_srll_3
-                0x0000000000004b7c                __mspabi_srll_2
-                0x0000000000004b82                __mspabi_srll_1
+                0x0000000000004bfa       0x5c /Applications/ti/ccs930/ccs/tools/compiler/msp430-gcc-8.3.1.25_macos/bin/../lib/gcc/msp430-elf/8.3.1/large/full-memory-range/libgcc.a(srli.o)
+                0x0000000000004bfa                __mspabi_srll_15
+                0x0000000000004c00                __mspabi_srll_14
+                0x0000000000004c06                __mspabi_srll_13
+                0x0000000000004c0c                __mspabi_srll_12
+                0x0000000000004c12                __mspabi_srll_11
+                0x0000000000004c18                __mspabi_srll_10
+                0x0000000000004c1e                __mspabi_srll_9
+                0x0000000000004c24                __mspabi_srll_8
+                0x0000000000004c2a                __mspabi_srll_7
+                0x0000000000004c30                __mspabi_srll_6
+                0x0000000000004c36                __mspabi_srll_5
+                0x0000000000004c3c                __mspabi_srll_4
+                0x0000000000004c42                __mspabi_srll_3
+                0x0000000000004c48                __mspabi_srll_2
+                0x0000000000004c4e                __mspabi_srll_1
  .text.__mspabi_srll
-                0x0000000000004b8a        0xe /Applications/ti/ccs930/ccs/tools/compiler/msp430-gcc-8.3.1.25_macos/bin/../lib/gcc/msp430-elf/8.3.1/large/full-memory-range/libgcc.a(srli.o)
-                0x0000000000004b92                __mspabi_srll
+                0x0000000000004c56        0xe /Applications/ti/ccs930/ccs/tools/compiler/msp430-gcc-8.3.1.25_macos/bin/../lib/gcc/msp430-elf/8.3.1/large/full-memory-range/libgcc.a(srli.o)
+                0x0000000000004c5e                __mspabi_srll
  .text.__mspabi_srlll
-                0x0000000000004b98       0x20 /Applications/ti/ccs930/ccs/tools/compiler/msp430-gcc-8.3.1.25_macos/bin/../lib/gcc/msp430-elf/8.3.1/large/full-memory-range/libgcc.a(srli.o)
-                0x0000000000004b98                __mspabi_srlll
- .text.rand     0x0000000000004bb8       0xca /Applications/ti/ccs930/ccs/tools/compiler/msp430-gcc-8.3.1.25_macos/bin/../lib/gcc/msp430-elf/8.3.1/../../../../msp430-elf/lib/large/full-memory-range/libc.a(lib_a-rand.o)
-                0x0000000000004bb8                rand
- .text.malloc   0x0000000000004c82        0xc /Applications/ti/ccs930/ccs/tools/compiler/msp430-gcc-8.3.1.25_macos/bin/../lib/gcc/msp430-elf/8.3.1/../../../../msp430-elf/lib/large/full-memory-range/libc.a(lib_a-malloc.o)
-                0x0000000000004c82                malloc
+                0x0000000000004c64       0x20 /Applications/ti/ccs930/ccs/tools/compiler/msp430-gcc-8.3.1.25_macos/bin/../lib/gcc/msp430-elf/8.3.1/large/full-memory-range/libgcc.a(srli.o)
+                0x0000000000004c64                __mspabi_srlll
+ .text.rand     0x0000000000004c84       0xca /Applications/ti/ccs930/ccs/tools/compiler/msp430-gcc-8.3.1.25_macos/bin/../lib/gcc/msp430-elf/8.3.1/../../../../msp430-elf/lib/large/full-memory-range/libc.a(lib_a-rand.o)
+                0x0000000000004c84                rand
+ .text.malloc   0x0000000000004d4e        0xc /Applications/ti/ccs930/ccs/tools/compiler/msp430-gcc-8.3.1.25_macos/bin/../lib/gcc/msp430-elf/8.3.1/../../../../msp430-elf/lib/large/full-memory-range/libc.a(lib_a-malloc.o)
+                0x0000000000004d4e                malloc
  .text._malloc_r
-                0x0000000000004c8e      0x148 /Applications/ti/ccs930/ccs/tools/compiler/msp430-gcc-8.3.1.25_macos/bin/../lib/gcc/msp430-elf/8.3.1/../../../../msp430-elf/lib/large/full-memory-range/libc.a(lib_a-nano-mallocr.o)
-                0x0000000000004c8e                _malloc_r
- .text._sbrk_r  0x0000000000004dd6       0x28 /Applications/ti/ccs930/ccs/tools/compiler/msp430-gcc-8.3.1.25_macos/bin/../lib/gcc/msp430-elf/8.3.1/../../../../msp430-elf/lib/large/full-memory-range/libc.a(lib_a-sbrkr.o)
-                0x0000000000004dd6                _sbrk_r
+                0x0000000000004d5a      0x148 /Applications/ti/ccs930/ccs/tools/compiler/msp430-gcc-8.3.1.25_macos/bin/../lib/gcc/msp430-elf/8.3.1/../../../../msp430-elf/lib/large/full-memory-range/libc.a(lib_a-nano-mallocr.o)
+                0x0000000000004d5a                _malloc_r
+ .text._sbrk_r  0x0000000000004ea2       0x28 /Applications/ti/ccs930/ccs/tools/compiler/msp430-gcc-8.3.1.25_macos/bin/../lib/gcc/msp430-elf/8.3.1/../../../../msp430-elf/lib/large/full-memory-range/libc.a(lib_a-sbrkr.o)
+                0x0000000000004ea2                _sbrk_r
  .text.__muldi3
-                0x0000000000004dfe      0x13a /Applications/ti/ccs930/ccs/tools/compiler/msp430-gcc-8.3.1.25_macos/bin/../lib/gcc/msp430-elf/8.3.1/large/full-memory-range/libgcc.a(_muldi3.o)
-                0x0000000000004dfe                __mspabi_mpyll
+                0x0000000000004eca      0x13a /Applications/ti/ccs930/ccs/tools/compiler/msp430-gcc-8.3.1.25_macos/bin/../lib/gcc/msp430-elf/8.3.1/large/full-memory-range/libgcc.a(_muldi3.o)
+                0x0000000000004eca                __mspabi_mpyll
  .text.__mulsi2_f5
-                0x0000000000004f38       0x22 /Applications/ti/ccs930/ccs/tools/compiler/msp430-gcc-8.3.1.25_macos/bin/../lib/gcc/msp430-elf/8.3.1/large/full-memory-range/libmul_f5.a(lib2hw_mul_f5.o)
-                0x0000000000004f38                __mspabi_mpyl
-                0x0000000000004f38                __mspabi_mpyl_f5hw
-                0x0000000000004f38                __mulsi2_f5
- .text._sbrk    0x0000000000004f5a       0x3e /Applications/ti/ccs930/ccs/tools/compiler/msp430-gcc-8.3.1.25_macos/bin/../lib/gcc/msp430-elf/8.3.1/../../../../msp430-elf/lib/large/full-memory-range/libnosys.a(sbrk.o)
-                0x0000000000004f5a                _sbrk
-                0x0000000000004f5a                sbrk
- .text.write    0x0000000000004f98       0x86 /Applications/ti/ccs930/ccs/tools/compiler/msp430-gcc-8.3.1.25_macos/bin/../lib/gcc/msp430-elf/8.3.1/../../../../msp430-elf/lib/large/full-memory-range/libnosys.a(write.o)
-                0x0000000000004f98                write
- .text          0x000000000000501e        0x4 /Applications/ti/ccs930/ccs/tools/compiler/msp430-gcc-8.3.1.25_macos/bin/../lib/gcc/msp430-elf/8.3.1/../../../../msp430-elf/lib/large/full-memory-range/libnosys.a(cio.o)
-                0x000000000000501e                C$$IO$$
-                0x000000000000501e                _libgloss_cio_hook
- .text.abort    0x0000000000005022        0xe /Applications/ti/ccs930/ccs/tools/compiler/msp430-gcc-8.3.1.25_macos/bin/../lib/gcc/msp430-elf/8.3.1/../../../../msp430-elf/lib/large/full-memory-range/libc.a(lib_a-abort.o)
-                0x0000000000005022                abort
- .text.memcpy   0x0000000000005030       0x2a /Applications/ti/ccs930/ccs/tools/compiler/msp430-gcc-8.3.1.25_macos/bin/../lib/gcc/msp430-elf/8.3.1/../../../../msp430-elf/lib/large/full-memory-range/libc.a(lib_a-memcpy.o)
-                0x0000000000005030                memcpy
- .text.memmove  0x000000000000505a       0x64 /Applications/ti/ccs930/ccs/tools/compiler/msp430-gcc-8.3.1.25_macos/bin/../lib/gcc/msp430-elf/8.3.1/../../../../msp430-elf/lib/large/full-memory-range/libc.a(lib_a-memmove.o)
-                0x000000000000505a                memmove
- .text.memset   0x00000000000050be       0x1a /Applications/ti/ccs930/ccs/tools/compiler/msp430-gcc-8.3.1.25_macos/bin/../lib/gcc/msp430-elf/8.3.1/../../../../msp430-elf/lib/large/full-memory-range/libc.a(lib_a-memset.o)
-                0x00000000000050be                memset
+                0x0000000000005004       0x22 /Applications/ti/ccs930/ccs/tools/compiler/msp430-gcc-8.3.1.25_macos/bin/../lib/gcc/msp430-elf/8.3.1/large/full-memory-range/libmul_f5.a(lib2hw_mul_f5.o)
+                0x0000000000005004                __mspabi_mpyl
+                0x0000000000005004                __mspabi_mpyl_f5hw
+                0x0000000000005004                __mulsi2_f5
+ .text._sbrk    0x0000000000005026       0x3e /Applications/ti/ccs930/ccs/tools/compiler/msp430-gcc-8.3.1.25_macos/bin/../lib/gcc/msp430-elf/8.3.1/../../../../msp430-elf/lib/large/full-memory-range/libnosys.a(sbrk.o)
+                0x0000000000005026                _sbrk
+                0x0000000000005026                sbrk
+ .text.write    0x0000000000005064       0x86 /Applications/ti/ccs930/ccs/tools/compiler/msp430-gcc-8.3.1.25_macos/bin/../lib/gcc/msp430-elf/8.3.1/../../../../msp430-elf/lib/large/full-memory-range/libnosys.a(write.o)
+                0x0000000000005064                write
+ .text          0x00000000000050ea        0x4 /Applications/ti/ccs930/ccs/tools/compiler/msp430-gcc-8.3.1.25_macos/bin/../lib/gcc/msp430-elf/8.3.1/../../../../msp430-elf/lib/large/full-memory-range/libnosys.a(cio.o)
+                0x00000000000050ea                C$$IO$$
+                0x00000000000050ea                _libgloss_cio_hook
+ .text.abort    0x00000000000050ee        0xe /Applications/ti/ccs930/ccs/tools/compiler/msp430-gcc-8.3.1.25_macos/bin/../lib/gcc/msp430-elf/8.3.1/../../../../msp430-elf/lib/large/full-memory-range/libc.a(lib_a-abort.o)
+                0x00000000000050ee                abort
+ .text.memcpy   0x00000000000050fc       0x2a /Applications/ti/ccs930/ccs/tools/compiler/msp430-gcc-8.3.1.25_macos/bin/../lib/gcc/msp430-elf/8.3.1/../../../../msp430-elf/lib/large/full-memory-range/libc.a(lib_a-memcpy.o)
+                0x00000000000050fc                memcpy
+ .text.memmove  0x0000000000005126       0x64 /Applications/ti/ccs930/ccs/tools/compiler/msp430-gcc-8.3.1.25_macos/bin/../lib/gcc/msp430-elf/8.3.1/../../../../msp430-elf/lib/large/full-memory-range/libc.a(lib_a-memmove.o)
+                0x0000000000005126                memmove
+ .text.memset   0x000000000000518a       0x1a /Applications/ti/ccs930/ccs/tools/compiler/msp430-gcc-8.3.1.25_macos/bin/../lib/gcc/msp430-elf/8.3.1/../../../../msp430-elf/lib/large/full-memory-range/libc.a(lib_a-memset.o)
+                0x000000000000518a                memset
  .text._raise_r
-                0x00000000000050d8       0x98 /Applications/ti/ccs930/ccs/tools/compiler/msp430-gcc-8.3.1.25_macos/bin/../lib/gcc/msp430-elf/8.3.1/../../../../msp430-elf/lib/large/full-memory-range/libc.a(lib_a-signal.o)
-                0x00000000000050d8                _raise_r
- .text.raise    0x0000000000005170        0xc /Applications/ti/ccs930/ccs/tools/compiler/msp430-gcc-8.3.1.25_macos/bin/../lib/gcc/msp430-elf/8.3.1/../../../../msp430-elf/lib/large/full-memory-range/libc.a(lib_a-signal.o)
-                0x0000000000005170                raise
- .text._kill_r  0x000000000000517c       0x28 /Applications/ti/ccs930/ccs/tools/compiler/msp430-gcc-8.3.1.25_macos/bin/../lib/gcc/msp430-elf/8.3.1/../../../../msp430-elf/lib/large/full-memory-range/libc.a(lib_a-signalr.o)
-                0x000000000000517c                _kill_r
+                0x00000000000051a4       0x98 /Applications/ti/ccs930/ccs/tools/compiler/msp430-gcc-8.3.1.25_macos/bin/../lib/gcc/msp430-elf/8.3.1/../../../../msp430-elf/lib/large/full-memory-range/libc.a(lib_a-signal.o)
+                0x00000000000051a4                _raise_r
+ .text.raise    0x000000000000523c        0xc /Applications/ti/ccs930/ccs/tools/compiler/msp430-gcc-8.3.1.25_macos/bin/../lib/gcc/msp430-elf/8.3.1/../../../../msp430-elf/lib/large/full-memory-range/libc.a(lib_a-signal.o)
+                0x000000000000523c                raise
+ .text._kill_r  0x0000000000005248       0x28 /Applications/ti/ccs930/ccs/tools/compiler/msp430-gcc-8.3.1.25_macos/bin/../lib/gcc/msp430-elf/8.3.1/../../../../msp430-elf/lib/large/full-memory-range/libc.a(lib_a-signalr.o)
+                0x0000000000005248                _kill_r
  .text._getpid_r
-                0x00000000000051a4        0x6 /Applications/ti/ccs930/ccs/tools/compiler/msp430-gcc-8.3.1.25_macos/bin/../lib/gcc/msp430-elf/8.3.1/../../../../msp430-elf/lib/large/full-memory-range/libc.a(lib_a-signalr.o)
-                0x00000000000051a4                _getpid_r
- .text.getpid   0x00000000000051aa        0x6 /Applications/ti/ccs930/ccs/tools/compiler/msp430-gcc-8.3.1.25_macos/bin/../lib/gcc/msp430-elf/8.3.1/../../../../msp430-elf/lib/large/full-memory-range/libnosys.a(ciosyscalls.o)
-                0x00000000000051aa                getpid
- .text.kill     0x00000000000051b0       0x10 /Applications/ti/ccs930/ccs/tools/compiler/msp430-gcc-8.3.1.25_macos/bin/../lib/gcc/msp430-elf/8.3.1/../../../../msp430-elf/lib/large/full-memory-range/libnosys.a(ciosyscalls.o)
-                0x00000000000051b0                kill
- .text.exit     0x00000000000051c0        0x4 /Applications/ti/ccs930/ccs/tools/compiler/msp430-gcc-8.3.1.25_macos/bin/../lib/gcc/msp430-elf/8.3.1/../../../../msp430-elf/lib/large/full-memory-range/libnosys.a(exit.o)
-                0x00000000000051c0                exit
-                0x00000000000051c0                _exit
- .text.__errno  0x00000000000051c4        0x6 /Applications/ti/ccs930/ccs/tools/compiler/msp430-gcc-8.3.1.25_macos/bin/../lib/gcc/msp430-elf/8.3.1/../../../../msp430-elf/lib/large/full-memory-range/libc.a(lib_a-errno.o)
-                0x00000000000051c4                __errno
+                0x0000000000005270        0x6 /Applications/ti/ccs930/ccs/tools/compiler/msp430-gcc-8.3.1.25_macos/bin/../lib/gcc/msp430-elf/8.3.1/../../../../msp430-elf/lib/large/full-memory-range/libc.a(lib_a-signalr.o)
+                0x0000000000005270                _getpid_r
+ .text.getpid   0x0000000000005276        0x6 /Applications/ti/ccs930/ccs/tools/compiler/msp430-gcc-8.3.1.25_macos/bin/../lib/gcc/msp430-elf/8.3.1/../../../../msp430-elf/lib/large/full-memory-range/libnosys.a(ciosyscalls.o)
+                0x0000000000005276                getpid
+ .text.kill     0x000000000000527c       0x10 /Applications/ti/ccs930/ccs/tools/compiler/msp430-gcc-8.3.1.25_macos/bin/../lib/gcc/msp430-elf/8.3.1/../../../../msp430-elf/lib/large/full-memory-range/libnosys.a(ciosyscalls.o)
+                0x000000000000527c                kill
+ .text.exit     0x000000000000528c        0x4 /Applications/ti/ccs930/ccs/tools/compiler/msp430-gcc-8.3.1.25_macos/bin/../lib/gcc/msp430-elf/8.3.1/../../../../msp430-elf/lib/large/full-memory-range/libnosys.a(exit.o)
+                0x000000000000528c                exit
+                0x000000000000528c                _exit
+ .text.__errno  0x0000000000005290        0x6 /Applications/ti/ccs930/ccs/tools/compiler/msp430-gcc-8.3.1.25_macos/bin/../lib/gcc/msp430-elf/8.3.1/../../../../msp430-elf/lib/large/full-memory-range/libc.a(lib_a-errno.o)
+                0x0000000000005290                __errno
  *(.text.*personality*)
  *(.gnu.warning)
  *(.interp .hash .dynsym .dynstr .gnu.version*)
                 [!provide]                        PROVIDE (__etext, .)
                 [!provide]                        PROVIDE (_etext, .)
                 [!provide]                        PROVIDE (etext, .)
-                0x00000000000051ca                . = ALIGN (0x2)
+                0x0000000000005296                . = ALIGN (0x2)
  *(.init)
  *(.fini)
  *(.tm_clone_table)
@@ -1021,95 +1017,95 @@ __reset_vector  0x000000000000fffe        0x2
 .debug_pubnames
  *(.debug_pubnames)
 
-.debug_info     0x0000000000000000     0xe270
+.debug_info     0x0000000000000000     0xe283
  *(.debug_info .gnu.linkonce.wi.*)
  .debug_info    0x0000000000000000     0x33d6 ./main.o
- .debug_info    0x00000000000033d6     0x36bf ./os.o
- .debug_info    0x0000000000006a95     0x355e ./queue.o
- .debug_info    0x0000000000009ff3     0x3425 ./tasks.o
- .debug_info    0x000000000000d418      0x15f /Applications/ti/ccs930/ccs/tools/compiler/msp430-gcc-8.3.1.25_macos/bin/../lib/gcc/msp430-elf/8.3.1/../../../../msp430-elf/lib/large/full-memory-range/libnosys.a(sbrk.o)
- .debug_info    0x000000000000d577      0xabc /Applications/ti/ccs930/ccs/tools/compiler/msp430-gcc-8.3.1.25_macos/bin/../lib/gcc/msp430-elf/8.3.1/../../../../msp430-elf/lib/large/full-memory-range/libnosys.a(write.o)
- .debug_info    0x000000000000e033       0xf5 /Applications/ti/ccs930/ccs/tools/compiler/msp430-gcc-8.3.1.25_macos/bin/../lib/gcc/msp430-elf/8.3.1/../../../../msp430-elf/lib/large/full-memory-range/libnosys.a(cio.o)
- .debug_info    0x000000000000e128       0xf9 /Applications/ti/ccs930/ccs/tools/compiler/msp430-gcc-8.3.1.25_macos/bin/../lib/gcc/msp430-elf/8.3.1/../../../../msp430-elf/lib/large/full-memory-range/libnosys.a(ciosyscalls.o)
- .debug_info    0x000000000000e221       0x4f /Applications/ti/ccs930/ccs/tools/compiler/msp430-gcc-8.3.1.25_macos/bin/../lib/gcc/msp430-elf/8.3.1/../../../../msp430-elf/lib/large/full-memory-range/libnosys.a(exit.o)
+ .debug_info    0x00000000000033d6     0x36ff ./os.o
+ .debug_info    0x0000000000006ad5     0x3545 ./queue.o
+ .debug_info    0x000000000000a01a     0x3411 ./tasks.o
+ .debug_info    0x000000000000d42b      0x15f /Applications/ti/ccs930/ccs/tools/compiler/msp430-gcc-8.3.1.25_macos/bin/../lib/gcc/msp430-elf/8.3.1/../../../../msp430-elf/lib/large/full-memory-range/libnosys.a(sbrk.o)
+ .debug_info    0x000000000000d58a      0xabc /Applications/ti/ccs930/ccs/tools/compiler/msp430-gcc-8.3.1.25_macos/bin/../lib/gcc/msp430-elf/8.3.1/../../../../msp430-elf/lib/large/full-memory-range/libnosys.a(write.o)
+ .debug_info    0x000000000000e046       0xf5 /Applications/ti/ccs930/ccs/tools/compiler/msp430-gcc-8.3.1.25_macos/bin/../lib/gcc/msp430-elf/8.3.1/../../../../msp430-elf/lib/large/full-memory-range/libnosys.a(cio.o)
+ .debug_info    0x000000000000e13b       0xf9 /Applications/ti/ccs930/ccs/tools/compiler/msp430-gcc-8.3.1.25_macos/bin/../lib/gcc/msp430-elf/8.3.1/../../../../msp430-elf/lib/large/full-memory-range/libnosys.a(ciosyscalls.o)
+ .debug_info    0x000000000000e234       0x4f /Applications/ti/ccs930/ccs/tools/compiler/msp430-gcc-8.3.1.25_macos/bin/../lib/gcc/msp430-elf/8.3.1/../../../../msp430-elf/lib/large/full-memory-range/libnosys.a(exit.o)
 
-.debug_abbrev   0x0000000000000000      0xbd2
+.debug_abbrev   0x0000000000000000      0xbdb
  *(.debug_abbrev)
  .debug_abbrev  0x0000000000000000      0x1a1 ./main.o
- .debug_abbrev  0x00000000000001a1      0x247 ./os.o
- .debug_abbrev  0x00000000000003e8      0x1f1 ./queue.o
- .debug_abbrev  0x00000000000005d9      0x1b2 ./tasks.o
- .debug_abbrev  0x000000000000078b      0x177 /Applications/ti/ccs930/ccs/tools/compiler/msp430-gcc-8.3.1.25_macos/bin/../lib/gcc/msp430-elf/8.3.1/../../../../msp430-elf/lib/large/full-memory-range/libnosys.a(sbrk.o)
- .debug_abbrev  0x0000000000000902      0x25b /Applications/ti/ccs930/ccs/tools/compiler/msp430-gcc-8.3.1.25_macos/bin/../lib/gcc/msp430-elf/8.3.1/../../../../msp430-elf/lib/large/full-memory-range/libnosys.a(write.o)
- .debug_abbrev  0x0000000000000b5d       0x14 /Applications/ti/ccs930/ccs/tools/compiler/msp430-gcc-8.3.1.25_macos/bin/../lib/gcc/msp430-elf/8.3.1/../../../../msp430-elf/lib/large/full-memory-range/libnosys.a(cio.o)
- .debug_abbrev  0x0000000000000b71       0x12 /Applications/ti/ccs930/ccs/tools/compiler/msp430-gcc-8.3.1.25_macos/bin/../lib/gcc/msp430-elf/8.3.1/../../../../msp430-elf/lib/large/full-memory-range/libnosys.a(ciosyscalls.o)
- .debug_abbrev  0x0000000000000b83       0x4f /Applications/ti/ccs930/ccs/tools/compiler/msp430-gcc-8.3.1.25_macos/bin/../lib/gcc/msp430-elf/8.3.1/../../../../msp430-elf/lib/large/full-memory-range/libnosys.a(exit.o)
+ .debug_abbrev  0x00000000000001a1      0x263 ./os.o
+ .debug_abbrev  0x0000000000000404      0x1de ./queue.o
+ .debug_abbrev  0x00000000000005e2      0x1b2 ./tasks.o
+ .debug_abbrev  0x0000000000000794      0x177 /Applications/ti/ccs930/ccs/tools/compiler/msp430-gcc-8.3.1.25_macos/bin/../lib/gcc/msp430-elf/8.3.1/../../../../msp430-elf/lib/large/full-memory-range/libnosys.a(sbrk.o)
+ .debug_abbrev  0x000000000000090b      0x25b /Applications/ti/ccs930/ccs/tools/compiler/msp430-gcc-8.3.1.25_macos/bin/../lib/gcc/msp430-elf/8.3.1/../../../../msp430-elf/lib/large/full-memory-range/libnosys.a(write.o)
+ .debug_abbrev  0x0000000000000b66       0x14 /Applications/ti/ccs930/ccs/tools/compiler/msp430-gcc-8.3.1.25_macos/bin/../lib/gcc/msp430-elf/8.3.1/../../../../msp430-elf/lib/large/full-memory-range/libnosys.a(cio.o)
+ .debug_abbrev  0x0000000000000b7a       0x12 /Applications/ti/ccs930/ccs/tools/compiler/msp430-gcc-8.3.1.25_macos/bin/../lib/gcc/msp430-elf/8.3.1/../../../../msp430-elf/lib/large/full-memory-range/libnosys.a(ciosyscalls.o)
+ .debug_abbrev  0x0000000000000b8c       0x4f /Applications/ti/ccs930/ccs/tools/compiler/msp430-gcc-8.3.1.25_macos/bin/../lib/gcc/msp430-elf/8.3.1/../../../../msp430-elf/lib/large/full-memory-range/libnosys.a(exit.o)
 
-.debug_line     0x0000000000000000     0x1420
+.debug_line     0x0000000000000000     0x1441
  *(.debug_line .debug_line.* .debug_line_end)
- .debug_line    0x0000000000000000      0x1fe ./main.o
- .debug_line    0x00000000000001fe      0x68a ./os.o
- .debug_line    0x0000000000000888      0x378 ./queue.o
- .debug_line    0x0000000000000c00      0x2ff ./tasks.o
- .debug_line    0x0000000000000eff       0x5e /Applications/ti/ccs930/ccs/tools/compiler/msp430-gcc-8.3.1.25_macos/bin/../lib/gcc/msp430-elf/8.3.1/../../../../msp430-elf/lib/large/full-memory-range/libnosys.a(sbrk.o)
+ .debug_line    0x0000000000000000      0x1f8 ./main.o
+ .debug_line    0x00000000000001f8      0x6eb ./os.o
+ .debug_line    0x00000000000008e3      0x356 ./queue.o
+ .debug_line    0x0000000000000c39      0x2e7 ./tasks.o
+ .debug_line    0x0000000000000f20       0x5e /Applications/ti/ccs930/ccs/tools/compiler/msp430-gcc-8.3.1.25_macos/bin/../lib/gcc/msp430-elf/8.3.1/../../../../msp430-elf/lib/large/full-memory-range/libnosys.a(sbrk.o)
  .debug_line.text._sbrk
-                0x0000000000000f5d       0x8d /Applications/ti/ccs930/ccs/tools/compiler/msp430-gcc-8.3.1.25_macos/bin/../lib/gcc/msp430-elf/8.3.1/../../../../msp430-elf/lib/large/full-memory-range/libnosys.a(sbrk.o)
+                0x0000000000000f7e       0x8d /Applications/ti/ccs930/ccs/tools/compiler/msp430-gcc-8.3.1.25_macos/bin/../lib/gcc/msp430-elf/8.3.1/../../../../msp430-elf/lib/large/full-memory-range/libnosys.a(sbrk.o)
  .debug_line_end
-                0x0000000000000fea        0x0 /Applications/ti/ccs930/ccs/tools/compiler/msp430-gcc-8.3.1.25_macos/bin/../lib/gcc/msp430-elf/8.3.1/../../../../msp430-elf/lib/large/full-memory-range/libnosys.a(sbrk.o)
- .debug_line    0x0000000000000fea      0x18d /Applications/ti/ccs930/ccs/tools/compiler/msp430-gcc-8.3.1.25_macos/bin/../lib/gcc/msp430-elf/8.3.1/../../../../msp430-elf/lib/large/full-memory-range/libnosys.a(write.o)
+                0x000000000000100b        0x0 /Applications/ti/ccs930/ccs/tools/compiler/msp430-gcc-8.3.1.25_macos/bin/../lib/gcc/msp430-elf/8.3.1/../../../../msp430-elf/lib/large/full-memory-range/libnosys.a(sbrk.o)
+ .debug_line    0x000000000000100b      0x18d /Applications/ti/ccs930/ccs/tools/compiler/msp430-gcc-8.3.1.25_macos/bin/../lib/gcc/msp430-elf/8.3.1/../../../../msp430-elf/lib/large/full-memory-range/libnosys.a(write.o)
  .debug_line.text.write
-                0x0000000000001177      0x14e /Applications/ti/ccs930/ccs/tools/compiler/msp430-gcc-8.3.1.25_macos/bin/../lib/gcc/msp430-elf/8.3.1/../../../../msp430-elf/lib/large/full-memory-range/libnosys.a(write.o)
+                0x0000000000001198      0x14e /Applications/ti/ccs930/ccs/tools/compiler/msp430-gcc-8.3.1.25_macos/bin/../lib/gcc/msp430-elf/8.3.1/../../../../msp430-elf/lib/large/full-memory-range/libnosys.a(write.o)
  .debug_line_end
-                0x00000000000012c5        0x0 /Applications/ti/ccs930/ccs/tools/compiler/msp430-gcc-8.3.1.25_macos/bin/../lib/gcc/msp430-elf/8.3.1/../../../../msp430-elf/lib/large/full-memory-range/libnosys.a(write.o)
- .debug_line    0x00000000000012c5       0x65 /Applications/ti/ccs930/ccs/tools/compiler/msp430-gcc-8.3.1.25_macos/bin/../lib/gcc/msp430-elf/8.3.1/../../../../msp430-elf/lib/large/full-memory-range/libnosys.a(cio.o)
+                0x00000000000012e6        0x0 /Applications/ti/ccs930/ccs/tools/compiler/msp430-gcc-8.3.1.25_macos/bin/../lib/gcc/msp430-elf/8.3.1/../../../../msp430-elf/lib/large/full-memory-range/libnosys.a(write.o)
+ .debug_line    0x00000000000012e6       0x65 /Applications/ti/ccs930/ccs/tools/compiler/msp430-gcc-8.3.1.25_macos/bin/../lib/gcc/msp430-elf/8.3.1/../../../../msp430-elf/lib/large/full-memory-range/libnosys.a(cio.o)
  .debug_line_end
-                0x000000000000132a        0x0 /Applications/ti/ccs930/ccs/tools/compiler/msp430-gcc-8.3.1.25_macos/bin/../lib/gcc/msp430-elf/8.3.1/../../../../msp430-elf/lib/large/full-memory-range/libnosys.a(cio.o)
- .debug_line    0x000000000000132a       0x57 /Applications/ti/ccs930/ccs/tools/compiler/msp430-gcc-8.3.1.25_macos/bin/../lib/gcc/msp430-elf/8.3.1/../../../../msp430-elf/lib/large/full-memory-range/libnosys.a(ciosyscalls.o)
+                0x000000000000134b        0x0 /Applications/ti/ccs930/ccs/tools/compiler/msp430-gcc-8.3.1.25_macos/bin/../lib/gcc/msp430-elf/8.3.1/../../../../msp430-elf/lib/large/full-memory-range/libnosys.a(cio.o)
+ .debug_line    0x000000000000134b       0x57 /Applications/ti/ccs930/ccs/tools/compiler/msp430-gcc-8.3.1.25_macos/bin/../lib/gcc/msp430-elf/8.3.1/../../../../msp430-elf/lib/large/full-memory-range/libnosys.a(ciosyscalls.o)
  .debug_line.text.getpid
-                0x0000000000001381       0x16 /Applications/ti/ccs930/ccs/tools/compiler/msp430-gcc-8.3.1.25_macos/bin/../lib/gcc/msp430-elf/8.3.1/../../../../msp430-elf/lib/large/full-memory-range/libnosys.a(ciosyscalls.o)
+                0x00000000000013a2       0x16 /Applications/ti/ccs930/ccs/tools/compiler/msp430-gcc-8.3.1.25_macos/bin/../lib/gcc/msp430-elf/8.3.1/../../../../msp430-elf/lib/large/full-memory-range/libnosys.a(ciosyscalls.o)
  .debug_line.text.kill
-                0x0000000000001397       0x11 /Applications/ti/ccs930/ccs/tools/compiler/msp430-gcc-8.3.1.25_macos/bin/../lib/gcc/msp430-elf/8.3.1/../../../../msp430-elf/lib/large/full-memory-range/libnosys.a(ciosyscalls.o)
+                0x00000000000013b8       0x11 /Applications/ti/ccs930/ccs/tools/compiler/msp430-gcc-8.3.1.25_macos/bin/../lib/gcc/msp430-elf/8.3.1/../../../../msp430-elf/lib/large/full-memory-range/libnosys.a(ciosyscalls.o)
  .debug_line_end
-                0x00000000000013a8        0x0 /Applications/ti/ccs930/ccs/tools/compiler/msp430-gcc-8.3.1.25_macos/bin/../lib/gcc/msp430-elf/8.3.1/../../../../msp430-elf/lib/large/full-memory-range/libnosys.a(ciosyscalls.o)
- .debug_line    0x00000000000013a8       0x50 /Applications/ti/ccs930/ccs/tools/compiler/msp430-gcc-8.3.1.25_macos/bin/../lib/gcc/msp430-elf/8.3.1/../../../../msp430-elf/lib/large/full-memory-range/libnosys.a(exit.o)
+                0x00000000000013c9        0x0 /Applications/ti/ccs930/ccs/tools/compiler/msp430-gcc-8.3.1.25_macos/bin/../lib/gcc/msp430-elf/8.3.1/../../../../msp430-elf/lib/large/full-memory-range/libnosys.a(ciosyscalls.o)
+ .debug_line    0x00000000000013c9       0x50 /Applications/ti/ccs930/ccs/tools/compiler/msp430-gcc-8.3.1.25_macos/bin/../lib/gcc/msp430-elf/8.3.1/../../../../msp430-elf/lib/large/full-memory-range/libnosys.a(exit.o)
  .debug_line.text.exit
-                0x00000000000013f8       0x28 /Applications/ti/ccs930/ccs/tools/compiler/msp430-gcc-8.3.1.25_macos/bin/../lib/gcc/msp430-elf/8.3.1/../../../../msp430-elf/lib/large/full-memory-range/libnosys.a(exit.o)
+                0x0000000000001419       0x28 /Applications/ti/ccs930/ccs/tools/compiler/msp430-gcc-8.3.1.25_macos/bin/../lib/gcc/msp430-elf/8.3.1/../../../../msp430-elf/lib/large/full-memory-range/libnosys.a(exit.o)
  .debug_line_end
-                0x0000000000001420        0x0 /Applications/ti/ccs930/ccs/tools/compiler/msp430-gcc-8.3.1.25_macos/bin/../lib/gcc/msp430-elf/8.3.1/../../../../msp430-elf/lib/large/full-memory-range/libnosys.a(exit.o)
+                0x0000000000001441        0x0 /Applications/ti/ccs930/ccs/tools/compiler/msp430-gcc-8.3.1.25_macos/bin/../lib/gcc/msp430-elf/8.3.1/../../../../msp430-elf/lib/large/full-memory-range/libnosys.a(exit.o)
 
-.debug_frame    0x0000000000000000      0x204
+.debug_frame    0x0000000000000000      0x1f4
  *(.debug_frame)
  .debug_frame   0x0000000000000000       0x30 ./main.o
- .debug_frame   0x0000000000000030       0x94 ./os.o
- .debug_frame   0x00000000000000c4       0x64 ./queue.o
- .debug_frame   0x0000000000000128       0x44 ./tasks.o
- .debug_frame   0x000000000000016c       0x34 /Applications/ti/ccs930/ccs/tools/compiler/msp430-gcc-8.3.1.25_macos/bin/../lib/gcc/msp430-elf/8.3.1/../../../../msp430-elf/lib/large/full-memory-range/libnosys.a(sbrk.o)
- .debug_frame   0x00000000000001a0       0x40 /Applications/ti/ccs930/ccs/tools/compiler/msp430-gcc-8.3.1.25_macos/bin/../lib/gcc/msp430-elf/8.3.1/../../../../msp430-elf/lib/large/full-memory-range/libnosys.a(write.o)
- .debug_frame   0x00000000000001e0       0x24 /Applications/ti/ccs930/ccs/tools/compiler/msp430-gcc-8.3.1.25_macos/bin/../lib/gcc/msp430-elf/8.3.1/../../../../msp430-elf/lib/large/full-memory-range/libnosys.a(exit.o)
+ .debug_frame   0x0000000000000030       0xa0 ./os.o
+ .debug_frame   0x00000000000000d0       0x58 ./queue.o
+ .debug_frame   0x0000000000000128       0x34 ./tasks.o
+ .debug_frame   0x000000000000015c       0x34 /Applications/ti/ccs930/ccs/tools/compiler/msp430-gcc-8.3.1.25_macos/bin/../lib/gcc/msp430-elf/8.3.1/../../../../msp430-elf/lib/large/full-memory-range/libnosys.a(sbrk.o)
+ .debug_frame   0x0000000000000190       0x40 /Applications/ti/ccs930/ccs/tools/compiler/msp430-gcc-8.3.1.25_macos/bin/../lib/gcc/msp430-elf/8.3.1/../../../../msp430-elf/lib/large/full-memory-range/libnosys.a(write.o)
+ .debug_frame   0x00000000000001d0       0x24 /Applications/ti/ccs930/ccs/tools/compiler/msp430-gcc-8.3.1.25_macos/bin/../lib/gcc/msp430-elf/8.3.1/../../../../msp430-elf/lib/large/full-memory-range/libnosys.a(exit.o)
 
-.debug_str      0x0000000000000000     0x2351
+.debug_str      0x0000000000000000     0x234d
  *(.debug_str)
  .debug_str     0x0000000000000000     0x206e ./main.o
                                        0x20d7 (size before relaxing)
- .debug_str     0x000000000000206e      0x11f ./os.o
-                                       0x2212 (size before relaxing)
- .debug_str     0x000000000000218d       0x2c ./queue.o
-                                       0x2188 (size before relaxing)
- .debug_str     0x00000000000021b9       0x2f ./tasks.o
-                                       0x210b (size before relaxing)
- .debug_str     0x00000000000021e8       0xaf /Applications/ti/ccs930/ccs/tools/compiler/msp430-gcc-8.3.1.25_macos/bin/../lib/gcc/msp430-elf/8.3.1/../../../../msp430-elf/lib/large/full-memory-range/libnosys.a(sbrk.o)
+ .debug_str     0x000000000000206e      0x130 ./os.o
+                                       0x222b (size before relaxing)
+ .debug_str     0x000000000000219e       0x21 ./queue.o
+                                       0x2180 (size before relaxing)
+ .debug_str     0x00000000000021bf       0x25 ./tasks.o
+                                       0x2101 (size before relaxing)
+ .debug_str     0x00000000000021e4       0xaf /Applications/ti/ccs930/ccs/tools/compiler/msp430-gcc-8.3.1.25_macos/bin/../lib/gcc/msp430-elf/8.3.1/../../../../msp430-elf/lib/large/full-memory-range/libnosys.a(sbrk.o)
                                          0xba (size before relaxing)
- .debug_str     0x0000000000002297       0x8a /Applications/ti/ccs930/ccs/tools/compiler/msp430-gcc-8.3.1.25_macos/bin/../lib/gcc/msp430-elf/8.3.1/../../../../msp430-elf/lib/large/full-memory-range/libnosys.a(write.o)
+ .debug_str     0x0000000000002293       0x8a /Applications/ti/ccs930/ccs/tools/compiler/msp430-gcc-8.3.1.25_macos/bin/../lib/gcc/msp430-elf/8.3.1/../../../../msp430-elf/lib/large/full-memory-range/libnosys.a(write.o)
                                         0x5bf (size before relaxing)
- .debug_str     0x0000000000002321       0x30 /Applications/ti/ccs930/ccs/tools/compiler/msp430-gcc-8.3.1.25_macos/bin/../lib/gcc/msp430-elf/8.3.1/../../../../msp430-elf/lib/large/full-memory-range/libnosys.a(exit.o)
+ .debug_str     0x000000000000231d       0x30 /Applications/ti/ccs930/ccs/tools/compiler/msp430-gcc-8.3.1.25_macos/bin/../lib/gcc/msp430-elf/8.3.1/../../../../msp430-elf/lib/large/full-memory-range/libnosys.a(exit.o)
                                          0xaa (size before relaxing)
 
-.debug_loc      0x0000000000000000      0x2cd
+.debug_loc      0x0000000000000000      0x2d8
  *(.debug_loc)
- .debug_loc     0x0000000000000000      0x102 ./os.o
- .debug_loc     0x0000000000000102       0x47 ./queue.o
- .debug_loc     0x0000000000000149       0x6f /Applications/ti/ccs930/ccs/tools/compiler/msp430-gcc-8.3.1.25_macos/bin/../lib/gcc/msp430-elf/8.3.1/../../../../msp430-elf/lib/large/full-memory-range/libnosys.a(sbrk.o)
- .debug_loc     0x00000000000001b8      0x115 /Applications/ti/ccs930/ccs/tools/compiler/msp430-gcc-8.3.1.25_macos/bin/../lib/gcc/msp430-elf/8.3.1/../../../../msp430-elf/lib/large/full-memory-range/libnosys.a(write.o)
+ .debug_loc     0x0000000000000000      0x118 ./os.o
+ .debug_loc     0x0000000000000118       0x3c ./queue.o
+ .debug_loc     0x0000000000000154       0x6f /Applications/ti/ccs930/ccs/tools/compiler/msp430-gcc-8.3.1.25_macos/bin/../lib/gcc/msp430-elf/8.3.1/../../../../msp430-elf/lib/large/full-memory-range/libnosys.a(sbrk.o)
+ .debug_loc     0x00000000000001c3      0x115 /Applications/ti/ccs930/ccs/tools/compiler/msp430-gcc-8.3.1.25_macos/bin/../lib/gcc/msp430-elf/8.3.1/../../../../msp430-elf/lib/large/full-memory-range/libnosys.a(write.o)
 
 .debug_macinfo
  *(.debug_macinfo)
@@ -1537,7 +1533,7 @@ __reset_vector  0x000000000000fffe        0x2
                 0x0000000000000100                PROVIDE (SFRIE1, 0x100)
                 [!provide]                        PROVIDE (SFRIE1_L, 0x100)
                 [!provide]                        PROVIDE (SFRIE1_H, 0x101)
-                [!provide]                        PROVIDE (SFRIFG1, 0x102)
+                0x0000000000000102                PROVIDE (SFRIFG1, 0x102)
                 [!provide]                        PROVIDE (SFRIFG1_L, 0x102)
                 [!provide]                        PROVIDE (SFRIFG1_H, 0x103)
                 [!provide]                        PROVIDE (SFRRPCR, 0x104)

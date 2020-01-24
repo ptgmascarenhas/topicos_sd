@@ -40,16 +40,16 @@
 #define MAX_TASKS 10
 
 void registerTask(void*, int8_t);
-void dispatcher(void);
-void clear_memo(void);
+//void dispatcher(void);
+//void clear_memo(void);
 void startRTOS(void);
 void wait(uint32_t);
 
 typedef struct {
-    uint32_t *pTask;
+    void     *pTask;
     uint16_t *pStack; // Ponteiro atual da pilha da tarefa
-    int8_t priority;
-    int8_t quantum;
+    int16_t priority;
+    int16_t quantum;
     volatile uint32_t wait;    // Quantidade de ticks que a tarefa aguarda
 } task_t;
 
