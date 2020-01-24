@@ -25,17 +25,8 @@
  * OBS ex: 284c -> PC(4) SR
  *         284e -> PC(16)
  *         2850 -> NADA (No. da trefa)
- *
- * Resumo do que o cafe falou:
- *      Tamo numa tarefaA, ai a gente tem a interrupcao e "tem que salvar o PC e SR atual na pilha da tarefa"
- *      Depois vai colocando tudo dos registradores em cima usando o pStack daquela tarefa
- *      No final o pStack dela ta la em cima
- *
- *      ai vamos para a tarefa B que ta com o pStack la em cima, pegamos e damos POP pros registradores
- *      depois disso pode dar RETI pois essa instrucao ja vai pegar o SR e o PC que tem nos registradores
- *       abaixo do pStack e ja joga pra tarefaB
- *
  */
+
 
 #ifndef OS
 #define OS
@@ -48,16 +39,18 @@
 #define STACK_END 0x2D00
 #define MAX_TASKS 10
 
-void registerTask(void* t);
-void dispatcher(void);
-void clear_memo(void);
+void registerTask(void*, int8_t);
+//void dispatcher(void);
+//void clear_memo(void);
 void startRTOS(void);
 void wait(uint32_t);
 
 typedef struct {
-    uint16_t* pStack;  // Ponteiro atual da pilha da tarefa
-    uint32_t* pTask;   // Onde esta a tarefa na memoria
-    volatile uint32_t wait; // Quantidade de ticks que a tarefa aguarda
+    void     *pTask;
+    uint16_t *pStack; // Ponteiro atual da pilha da tarefa
+    int16_t priority;
+    int16_t quantum;
+    volatile uint32_t wait;    // Quantidade de ticks que a tarefa aguarda
 } task_t;
 
 //void WDT_tick(void);

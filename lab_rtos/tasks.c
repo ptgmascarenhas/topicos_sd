@@ -3,12 +3,6 @@
 
 uint32_t task2_counter;
 
-void task_idle(void){
-    while(1){
-        continue;
-    }
-}
-
 void task1(void){
     P4DIR |= BIT7;
     P4OUT &= ~(BIT7);
