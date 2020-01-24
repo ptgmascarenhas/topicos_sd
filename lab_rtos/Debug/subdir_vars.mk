@@ -9,37 +9,31 @@ LD_SRCS += \
 C_SRCS += \
 ../main.c \
 ../os.c \
-../queue.c \
 ../tasks.c 
 
 C_DEPS += \
 ./main.d \
 ./os.d \
-./queue.d \
 ./tasks.d 
 
 OBJS += \
 ./main.o \
 ./os.o \
-./queue.o \
 ./tasks.o 
 
 OBJS__QUOTED += \
 "main.o" \
 "os.o" \
-"queue.o" \
 "tasks.o" 
 
 C_DEPS__QUOTED += \
 "main.d" \
 "os.d" \
-"queue.d" \
 "tasks.d" 
 
 C_SRCS__QUOTED += \
 "../main.c" \
 "../os.c" \
-"../queue.c" \
 "../tasks.c" 
 
 
