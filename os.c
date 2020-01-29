@@ -1,8 +1,7 @@
 #include <os.h>
 #include "queue.h"
 
-fifo_t fifos[MAX_PRIORITY_QUEUES],      // Filas comuns com prioridade
-       fifo_blocked;                    // Fila das tarefas bloqueadas
+fifo_t fifo[MAX_PRIORITY_QUEUES+1];     // Filas comuns com prioridade:0 < 1, 2 -> blocked
 task_t tasks[MAX_TASKS];                // Vetor de tarefas
 int16_t tasks_registered;               // Numero de tarefas ja registradas
 int16_t task_running;                   // PID da tarefa em execucao
@@ -43,47 +42,51 @@ void registerTask(void* func, int8_t priority, uint8_t code){
         // 100s -> tarefas de sistema
         // 500s -> registradas pelo usuario
         // 600s -> declaradas pelo usuario com codigo nao existente
-        switch(code){
-            case 0:
-                tasks[tasks_registered].pid = tasks_registered + 500;
-                break;
-            case 1:
-                tasks[tasks_registered].pid = tasks_registered + 0;
-                break;
-            case 2:
-                tasks[tasks_registered].pid = tasks_registered + 100;
-                break;
-            default:
-                tasks[tasks_registered].pid = tasks_registered + 600;
-                break;
-        }
+//        switch(code){
+//            case 0:
+//                tasks[tasks_registered].pid = tasks_registered + 500;
+//                break;
+//            case 1:
+//                tasks[tasks_registered].pid = tasks_registered + 0;
+//                break;
+//            case 2:
+//                tasks[tasks_registered].pid = tasks_registered + 100;
+//                break;
+//            default:
+//                tasks[tasks_registered].pid = tasks_registered + 600;
+//                break;
+//        }
+
+        tasks[tasks_registered].pid = tasks_registered;
 
         // Variavel auxiliar para guardar o endereco da funcao na memoria
         uint32_t task_local = (uint32_t) func;
 
         // Aponta para regiao de mem onde ficara a task
-        tasks[tasks_registered].pStack = (uint16_t *)(STACK_START + 0x50*(tasks_registered+1));
-
-        // Coloca na posicao inicial a numero da tarefa
-        *(tasks[tasks_registered].pStack) = tasks_registered;
+        tasks[tasks_registered].pStack = (uint16_t *)(STACK_START + 0x80*(tasks_registered));
 
         // Registra o PC e o SR inicial
-        uint16_t sr_status = 0;
-        asm("mov.w SR,%0" : "=m" (sr_status));
         uint16_t pc_msn = (task_local >> 4) & 0xF000;
         uint16_t pc_lsw = task_local;
 
         // Anda 1 posicao pra tras
-        tasks[tasks_registered].pStack--;
-
         // Coloca na memoria da maneira descrita no arquivo .h
-        *(tasks[tasks_registered].pStack--) = pc_lsw;
+        tasks[tasks_registered].pStack--;
+        *(tasks[tasks_registered].pStack) = pc_lsw;
+
+        tasks[tasks_registered].pStack--;
         *(tasks[tasks_registered].pStack) = pc_msn | 0x008;
 
         // Zerar espaco da pilha de registradores
         for(int i = 1; i <= 24; i++){
             *(--tasks[tasks_registered].pStack) = 0x00;
         }
+
+        // Declara como sem status especifico
+        tasks[tasks_registered].status = 0;
+
+        // Coloca na fila de sua prioridade o seu PID % 100, posicao que foi registrada O(1)
+        fifoPut(&fifo[tasks[tasks_registered].priority], tasks[tasks_registered].pid);
 
         // Incrementa em 1 unidade o numero de tarefas registradas
         tasks_registered++;
@@ -105,33 +108,35 @@ void task_idle(void){
     /*
      * Tarefa de background do so, escondida do usuario
      */
-    while(1){
-        continue;
-    }
+    while(1);
 }
 
 void startRTOS(void){
     /*
      *  Funcao para iniciar o SO
      */
-    WDTCTL = WDTPW | WDTSSEL__ACLK | WDTTMSEL | WDTIS_4; //No 4 a gente ve no 7 fica doidao
-    SFRIE1 |= WDTIE;
-    P1DIR |= BIT0;
 
     // Registra a tarefa de background, prioridade 0 e codigo 1
     registerTask(task_idle, 0, 1);
 
+    // Comeca rodando a tarefa background
+    task_running = fifoGet(&fifo[0]);
+
     // Subir o ponteiro da pilha para ele ficar no PC | SR
-    tasks[0].pStack += 26;
+    tasks[task_running].pStack += 26;
 
     // Move o que ta em pStack pro SP, pro MSP saber onde comeca
-    asm("movx.a %0,SP" :: "m" (tasks[0].pStack));
+    asm("movx.a %0,SP" :: "m" (tasks[task_running].pStack));
 
     // Precisa colocar o endereco da primeira tarefa?
-    asm("pushx.a %0" :: "m" (tasks[0].pTask));
+    asm("pushx.a %0" :: "m" (tasks[task_running].pTask));
 
     // Habilita as interrupcoes
+    WDTCTL = WDTPW | WDTSSEL__ACLK | WDTTMSEL | WDTIS_7 | WDTCNTCL; //No 4 a gente ve no 7 fica doidao
+    SFRIE1 |= WDTIE;
     __enable_interrupt();
+
+    asm("RETA");
 
     return;
 }
@@ -142,6 +147,8 @@ void wait(uint32_t ticks){
      *      uint32_t ticks: numero de ticks a serem aguardados
      */
     tasks[task_running].wait = ticks;
+    // Move tarefa para a fila de bloqueadas
+    // Declara o status de blocked
     while(tasks[task_running].wait);
     return;
 }
@@ -160,14 +167,34 @@ void WDT_tick(void){
 
     // 4. Executar o escalonador e obter a nova tarefa a ser executada
 
-    for(int i = 0; i < tasks_registered; i++){
-        if(tasks[i].wait > 0)
-            tasks[i].wait--;
+    // Se a tarefa nao foi bloqueada deve ir para a fila
+    if(tasks[task_running].wait)
+        fifoPut(&fifo[2], tasks[task_running].pid);
+    else
+        fifoPut(&fifo[tasks[task_running].priority], tasks[task_running].pid);
+
+    uint8_t size = fifo[2].size;
+
+    // Pega todas as tarefas das bloqueadas
+    for(int i = 0; i < size; i++){
+        // Pega uma tarefa da fila de bloqueadas
+        task_running = fifoGet(&fifo[2]);
+        // Diminui seu wait
+        tasks[task_running].wait--;
+        // Verifica se chegou a 0
+        if(tasks[task_running].wait == 0){ // Se chegou a 0 vai pra sua prioridade
+            fifoPut(&fifo[tasks[task_running].priority], tasks[task_running].pid);
+        }else{ // Se ainda nao chegou volta para blocked
+            fifoPut(&fifo[2], tasks[task_running].pid);
+        }
     }
 
-    do{
-        task_running = (task_running+1) % tasks_registered;
-    }while(tasks[task_running].wait);
+    // Adaptar quando crescer o numero de filas
+    if(fifo[1].size){
+        task_running = fifoGet(&fifo[1]);
+    }else{
+        task_running = fifoGet(&fifo[0]);
+    }
 
     // 5. Salvar o ponteiro da pilha do escalonador
         // (Implementacao futura)

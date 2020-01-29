@@ -1,0 +1,12 @@
+OLD codes from the project:
+
+1) Usando wait com o tick sem filas
+
+    for(int i = 0; i < tasks_registered; i++){
+        if(tasks[i].wait > 0)
+            tasks[i].wait--;
+    }
+
+    do{
+        task_running = (task_running+1) % tasks_registered;
+    }while(tasks[task_running].wait);

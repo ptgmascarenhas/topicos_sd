@@ -35,8 +35,9 @@
 #include <stdlib.h>
 
 #define STACK_START 0x2800
-#define STACK_END 0x2D00
-#define MAX_TASKS 10
+#define STACK_END   0x2D00
+#define MAX_TASKS   10
+#define BLOCKED     1
 
 void registerTask(void*, int8_t, uint8_t);
 void startRTOS(void);
@@ -53,6 +54,7 @@ typedef struct {
     int8_t priority;            // Qual a fila deve ser alocada, se der problema mudar para 16 bits
     int8_t quantum;             // Quantos slots deve ocupar, se der problema mudar para 16 bits
     volatile uint32_t wait;     // Quantidade de ticks que a tarefa aguarda
+    int8_t status;              // Variavel auxiliar (para usos futuros), usada para falar se e bloqueada
 } task_t;
 
 #endif

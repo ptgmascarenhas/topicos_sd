@@ -25,9 +25,10 @@ int16_t fifoGet(fifo_t *queue){
      */
 
     if(queue->size){ // A fila vai diminuir
+        int16_t pid = queue->fifo[queue->head];
         queue->head = (queue->head+1) % QUEUE_MAX_SIZE;
         queue->size -= 1;
-        return queue->fifo[queue->head - 1];
+        return pid;
     }else{
         return ERROR_QUEUE_EMPTY;
     }
