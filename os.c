@@ -42,22 +42,22 @@ void registerTask(void* func, int8_t priority, uint8_t code){
         // 100s -> tarefas de sistema
         // 500s -> registradas pelo usuario
         // 600s -> declaradas pelo usuario com codigo nao existente
-//        switch(code){
-//            case 0:
-//                tasks[tasks_registered].pid = tasks_registered + 500;
-//                break;
-//            case 1:
-//                tasks[tasks_registered].pid = tasks_registered + 0;
-//                break;
-//            case 2:
-//                tasks[tasks_registered].pid = tasks_registered + 100;
-//                break;
-//            default:
-//                tasks[tasks_registered].pid = tasks_registered + 600;
-//                break;
-//        }
+        switch(code){
+            case 0:
+                tasks[tasks_registered].pid = tasks_registered + 500;
+                break;
+            case 1:
+                tasks[tasks_registered].pid = tasks_registered + 0;
+                break;
+            case 2:
+                tasks[tasks_registered].pid = tasks_registered + 100;
+                break;
+            default:
+                tasks[tasks_registered].pid = tasks_registered + 600;
+                break;
+        }
 
-        tasks[tasks_registered].pid = tasks_registered;
+        //tasks[tasks_registered].pid = tasks_registered;
 
         // Variavel auxiliar para guardar o endereco da funcao na memoria
         uint32_t task_local = (uint32_t) func;
@@ -86,7 +86,7 @@ void registerTask(void* func, int8_t priority, uint8_t code){
         tasks[tasks_registered].status = 0;
 
         // Coloca na fila de sua prioridade o seu PID % 100, posicao que foi registrada O(1)
-        fifoPut(&fifo[tasks[tasks_registered].priority], tasks[tasks_registered].pid);
+        fifoPut(&fifo[tasks[tasks_registered].priority], tasks[tasks_registered].pid%100);
 
         // Incrementa em 1 unidade o numero de tarefas registradas
         tasks_registered++;
@@ -169,9 +169,9 @@ void WDT_tick(void){
 
     // Se a tarefa nao foi bloqueada deve ir para a fila
     if(tasks[task_running].wait)
-        fifoPut(&fifo[2], tasks[task_running].pid);
+        fifoPut(&fifo[2], tasks[task_running].pid%100);
     else
-        fifoPut(&fifo[tasks[task_running].priority], tasks[task_running].pid);
+        fifoPut(&fifo[tasks[task_running].priority], tasks[task_running].pid%100);
 
     uint8_t size = fifo[2].size;
 
@@ -183,9 +183,9 @@ void WDT_tick(void){
         tasks[task_running].wait--;
         // Verifica se chegou a 0
         if(tasks[task_running].wait == 0){ // Se chegou a 0 vai pra sua prioridade
-            fifoPut(&fifo[tasks[task_running].priority], tasks[task_running].pid);
+            fifoPut(&fifo[tasks[task_running].priority], tasks[task_running].pid%100);
         }else{ // Se ainda nao chegou volta para blocked
-            fifoPut(&fifo[2], tasks[task_running].pid);
+            fifoPut(&fifo[2], tasks[task_running].pid%100);
         }
     }
 
