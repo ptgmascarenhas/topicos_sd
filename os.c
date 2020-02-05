@@ -5,9 +5,10 @@ fifo_t fifo[MAX_PRIORITY_QUEUES+1];     // Filas comuns com prioridade:0 < 1, 2 
 task_t tasks[MAX_TASKS];                // Vetor de tarefas
 int16_t tasks_registered;               // Numero de tarefas ja registradas
 int16_t task_running;                   // PID da tarefa em execucao
+int8_t quantum_running;                 // Quantum da tarefa em execussao
 uint16_t *pSched = (uint16_t *) 0x2500; // Ponteiro da pilha do escalonador
 
-void registerTask(void* func, int8_t priority, uint8_t code){
+void registerTask(void* func, int8_t priority, uint8_t code, int8_t qt){
     /*  Funcao para registrar uma tarefa no processador
      *  Parametros:
      *      void* func: funcao que vai ser executada pela tarefa, interessante usar funcoes com loop infinito
@@ -17,6 +18,7 @@ void registerTask(void* func, int8_t priority, uint8_t code){
      *              - 0: tarefa comum, registrada por usuario
      *              - 1: tarefa de background, idle, tarefa registrada pelo OS
      *              - 2: demais tarefas registradas pelo OS
+     *      int8_t qt: ajuste fino na troca de tarefas e prioridades
      */
 
     // Verifica se ja se esgotou os espacos de memoria
@@ -33,7 +35,7 @@ void registerTask(void* func, int8_t priority, uint8_t code){
         }
 
         // Registra quantum a uma tarefa
-        tasks[tasks_registered].quantum = 0; //TODO: implementar quantum, ex5
+        tasks[tasks_registered].quantum = qt;
         // Registra wait a uma tarefa
         tasks[tasks_registered].wait = 0;
 
@@ -117,13 +119,15 @@ void startRTOS(void){
      */
 
     // Registra a tarefa de background, prioridade 0 e codigo 1
-    registerTask(task_idle, 0, 1);
+    registerTask(task_idle, 0, 1, 1);
 
     // Comeca rodando a tarefa background
     task_running = fifoGet(&fifo[0]);
 
     // Subir o ponteiro da pilha para ele ficar no PC | SR
     tasks[task_running].pStack += 26;
+
+    quantum_running = tasks[task_running].quantum;
 
     // Move o que ta em pStack pro SP, pro MSP saber onde comeca
     asm("movx.a %0,SP" :: "m" (tasks[task_running].pStack));
@@ -138,7 +142,7 @@ void startRTOS(void){
 
     asm("RETA");
 
-    return;
+    // return;
 }
 
 void wait(uint32_t ticks){
@@ -156,55 +160,60 @@ void wait(uint32_t ticks){
 __attribute__ ((naked))
 __attribute__ ((interrupt(WDT_VECTOR)))
 void WDT_tick(void){
-    // 1. Entrada na ISR (SR e PC já estão salvos na pilha da tarefa)
 
-    // 2. Salva o contexto, colocando os registros R[4-15] na pilha
-    asm("pushm.a  #12,R15");
-    asm("movx.a SP,%0" : "=m" (tasks[task_running].pStack));
+    //if(quantum_running < 0){
+        // 1. Entrada na ISR (SR e PC já estão salvos na pilha da tarefa)
 
-    // 3. Mover o ponteiro da pilha para a pilha do escalonador
-    asm("movx.a %0,SP" :: "m" (pSched));
+        // 2. Salva o contexto, colocando os registros R[4-15] na pilha
+        asm("pushm.a  #12,R15");
+        asm("movx.a SP,%0" : "=m" (tasks[task_running].pStack));
 
-    // 4. Executar o escalonador e obter a nova tarefa a ser executada
+        // 3. Mover o ponteiro da pilha para a pilha do escalonador
+        asm("movx.a %0,SP" :: "m" (pSched));
 
-    // Se a tarefa nao foi bloqueada deve ir para a fila
-    if(tasks[task_running].wait)
-        fifoPut(&fifo[2], tasks[task_running].pid%100);
-    else
-        fifoPut(&fifo[tasks[task_running].priority], tasks[task_running].pid%100);
+        // 4. Executar o escalonador e obter a nova tarefa a ser executada
 
-    uint8_t size = fifo[2].size;
-
-    // Pega todas as tarefas das bloqueadas
-    for(int i = 0; i < size; i++){
-        // Pega uma tarefa da fila de bloqueadas
-        task_running = fifoGet(&fifo[2]);
-        // Diminui seu wait
-        tasks[task_running].wait--;
-        // Verifica se chegou a 0
-        if(tasks[task_running].wait == 0){ // Se chegou a 0 vai pra sua prioridade
-            fifoPut(&fifo[tasks[task_running].priority], tasks[task_running].pid%100);
-        }else{ // Se ainda nao chegou volta para blocked
+        // Se a tarefa nao foi bloqueada deve ir para a fila
+        if(tasks[task_running].wait)
             fifoPut(&fifo[2], tasks[task_running].pid%100);
+        else
+            fifoPut(&fifo[tasks[task_running].priority], tasks[task_running].pid%100);
+
+        uint8_t size = fifo[2].size;
+
+        // Pega todas as tarefas das bloqueadas
+        for(int i = 0; i < size; i++){
+            // Pega uma tarefa da fila de bloqueadas
+            task_running = fifoGet(&fifo[2]);
+            // Diminui seu wait
+            tasks[task_running].wait--;
+            // Verifica se chegou a 0
+            if(tasks[task_running].wait == 0){ // Se chegou a 0 vai pra sua prioridade
+                fifoPut(&fifo[tasks[task_running].priority], tasks[task_running].pid%100);
+            }else{ // Se ainda nao chegou volta para blocked
+                fifoPut(&fifo[2], tasks[task_running].pid%100);
+            }
         }
-    }
 
-    // Adaptar quando crescer o numero de filas
-    if(fifo[1].size){
-        task_running = fifoGet(&fifo[1]);
-    }else{
-        task_running = fifoGet(&fifo[0]);
-    }
+        // Adaptar quando crescer o numero de filas
+        if(fifo[1].size){
+            task_running = fifoGet(&fifo[1]);
+        }else{
+            task_running = fifoGet(&fifo[0]);
+        }
 
-    // 5. Salvar o ponteiro da pilha do escalonador
-        // (Implementacao futura)
+        quantum_running = tasks[task_running].quantum;
 
-    // 6. Restaurar o ponteiro da pilha da nova tarefa
-    asm("MOV %0,SP" : : "m" (tasks[task_running].pStack));
+        // 5. Salvar o ponteiro da pilha do escalonador
+            // (Implementacao futura)
 
-    // 7. Restaura o contexto da nova tarefa
-    asm("popm.a #12,R15");
+        // 6. Restaurar o ponteiro da pilha da nova tarefa
+        asm("MOV %0,SP" : : "m" (tasks[task_running].pStack));
 
-    // 8. Retorna da interrupção (RETI)
-    asm("RETI");
+        // 7. Restaura o contexto da nova tarefa
+        asm("popm.a #12,R15");
+
+        // 8. Retorna da interrupção (RETI)
+        asm("RETI");
+    //}
 }

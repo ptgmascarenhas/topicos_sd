@@ -2,5 +2,5 @@
 #include <stdint.h>
 #include <stdlib.h>
 
-void task1(void);
-void task2(void);
+void task_led_verde(void);
+void task_led_vermelho(void);

@@ -6,8 +6,9 @@
 
 int main(void){
     // Fazer o registro das tarefas declaradas em tasks.h
-    registerTask(task1, 1, 0);
-    registerTask(task2, 1, 0);
+    // registerTask(funcao, fila, codigo, quantum)
+    registerTask(task_led_verde, 1, 0, 1);
+    registerTask(task_led_vermelho, 1, 0, 1);
 
     // Iniciar o sistema operacional
     startRTOS();

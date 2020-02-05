@@ -39,7 +39,7 @@
 #define MAX_TASKS   10
 #define BLOCKED     1
 
-void registerTask(void*, int8_t, uint8_t);
+void registerTask(void*, int8_t, uint8_t, int8_t);
 void startRTOS(void);
 void wait(uint32_t);
 //void clear_memo(void);
